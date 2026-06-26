@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cifra.js — Ofuscador de JavaScript</title>
+<meta name="description" content="Ofuscador de código JavaScript que roda 100% no seu navegador. Cole, ajuste a força e baixe. Nada sai do seu computador." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<a class="skip" href="#oficina">Pular para a oficina</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="./" aria-label="Cifra.js — início">
+      <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+      <span class="brand-name">Cifra<span class="brand-dot">.</span>js</span>
+    </a>
+    <nav class="header-nav">
+      <span class="badge" title="Nada é enviado para servidor nenhum">100% no navegador</span>
+      <a class="ghost-link" id="repoLink" href="#" target="_blank" rel="noopener" hidden>
+        <span aria-hidden="true">★</span> GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">ofuscador de javascript · estático · privado</p>
+      <h1 class="hero-title">Seu código,<br />ilegível para curiosos.</h1>
+      <p class="hero-lead">
+        Cole um <code>.js</code>, escolha a força e baixe a versão embaralhada.
+        Tudo acontece aqui no seu navegador — nenhuma linha sai do seu computador.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#oficina">Abrir a oficina</a>
+        <button class="btn btn-quiet" id="sampleBtn" type="button">Testar com exemplo</button>
+      </div>
+    </div>
+
+    <div class="cipher-demo" aria-hidden="true">
+      <div class="cipher-pane">
+        <span class="cipher-tag">legível</span>
+        <pre id="demoClean"></pre>
+      </div>
+      <div class="cipher-arrow"><span>cifrar</span></div>
+      <div class="cipher-pane cipher-pane--out">
+        <span class="cipher-tag cipher-tag--out">cifrado</span>
+        <pre id="demoObf"></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="oficina wrap" id="oficina" aria-label="Oficina de ofuscação">
+    <div class="panes">
+      <!-- ENTRADA -->
+      <div class="pane pane-in">
+        <div class="pane-head">
+          <h2 class="pane-title">Entrada</h2>
+          <div class="pane-tools">
+            <label class="tool file-tool">
+              <input type="file" id="fileInput" accept=".js,.mjs,.cjs,text/javascript" />
+              <span>Abrir arquivo</span>
+            </label>
+            <button class="tool" id="clearBtn" type="button">Limpar</button>
+          </div>
+        </div>
+        <textarea
+          id="input"
+          class="editor"
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off"
+          placeholder="// cole seu JavaScript aqui&#10;function ola(nome) {&#10;  return `oi, ${nome}`;&#10;}"></textarea>
+        <div class="pane-foot">
+          <span id="inMeta" class="meta">0 caracteres</span>
+        </div>
+      </div>
+
+      <!-- CONTROLE -->
+      <div class="console">
+        <button class="cifrar-btn" id="run" type="button">
+          <span class="cifrar-label">Cifrar</span>
+          <span class="cifrar-spinner" aria-hidden="true"></span>
+        </button>
+
+        <fieldset class="presets">
+          <legend>Força</legend>
+          <div class="preset-row" role="radiogroup" aria-label="Nível de ofuscação">
+            <button class="preset" data-preset="leve" type="button" role="radio" aria-checked="false">Leve</button>
+            <button class="preset is-active" data-preset="medio" type="button" role="radio" aria-checked="true">Médio</button>
+            <button class="preset" data-preset="pesado" type="button" role="radio" aria-checked="false">Pesado</button>
+          </div>
+          <p class="preset-hint" id="presetHint">Equilíbrio entre proteção e tamanho do arquivo.</p>
+        </fieldset>
+
+        <details class="advanced">
+          <summary>Ajuste fino</summary>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" data-opt="compact" checked /><span>Compactar</span></label>
+            <label class="opt"><input type="checkbox" data-opt="simplify" checked /><span>Simplificar</span></label>
+            <label class="opt"><input type="checkbox" data-opt="stringArray" checked /><span>Array de strings</span></label>
+            <label class="opt"><input type="checkbox" data-opt="controlFlowFlattening" /><span>Achatar fluxo</span></label>
+            <label class="opt"><input type="checkbox" data-opt="deadCodeInjection" /><span>Código morto</span></label>
+            <label class="opt"><input type="checkbox" data-opt="numbersToExpressions" /><span>Números → expressões</span></label>
+            <label class="opt"><input type="checkbox" data-opt="transformObjectKeys" /><span>Chaves de objeto</span></label>
+            <label class="opt"><input type="checkbox" data-opt="renameGlobals" /><span>Renomear globais</span></label>
+            <label class="opt"><input type="checkbox" data-opt="selfDefending" /><span>Autodefesa</span></label>
+            <label class="opt"><input type="checkbox" data-opt="disableConsoleOutput" /><span>Silenciar console</span></label>
+          </div>
+          <label class="opt opt-line">
+            <span>Codificar strings</span>
+            <select id="strEncoding">
+              <option value="none">nenhuma</option>
+              <option value="base64" selected>base64</option>
+              <option value="rc4">rc4</option>
+            </select>
+          </label>
+        </details>
+      </div>
+
+      <!-- SAÍDA -->
+      <div class="pane pane-out">
+        <div class="pane-head">
+          <h2 class="pane-title">Saída</h2>
+          <div class="pane-tools">
+            <button class="tool" id="copyBtn" type="button" disabled>Copiar</button>
+            <button class="tool tool-accent" id="downloadBtn" type="button" disabled>Baixar .js</button>
+          </div>
+        </div>
+        <textarea id="output" class="editor editor-out" readonly spellcheck="false" placeholder="// o resultado cifrado aparece aqui"></textarea>
+        <div class="pane-foot">
+          <span id="outMeta" class="meta">0 caracteres</span>
+          <span id="ratio" class="meta meta-ratio"></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="notes wrap">
+    <div class="note">
+      <h3>O que a ofuscação faz</h3>
+      <p>Renomeia variáveis, esconde strings, embaralha a lógica e remove o formato. O código continua funcionando igual — só fica muito mais difícil de ler e copiar.</p>
+    </div>
+    <div class="note">
+      <h3>O que ela <em>não</em> faz</h3>
+      <p>Não é criptografia. Quem tiver tempo e ferramentas ainda consegue analisar. Use para desencorajar cópia casual, não para guardar segredo de verdade.</p>
+    </div>
+    <div class="note">
+      <h3>Por que roda no navegador</h3>
+      <p>São só três arquivos estáticos. Cabe no GitHub Pages sem servidor, sem build, sem custo — e seu código nunca trafega pela rede.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span class="brand-name footer-brand">Cifra<span class="brand-dot">.</span>js</span>
+    <span class="footer-tech">engine: javascript-obfuscator · UI própria</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/javascript-obfuscator@5.4.3/dist/index.browser.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
